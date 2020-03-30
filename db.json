@@ -1,0 +1,22 @@
+{
+  "posts": [
+    {
+      "text": "Item1",
+      "important": true,
+      "done": false,
+      "id": 1
+    },
+    {
+      "text": "Item3",
+      "important": true,
+      "done": false,
+      "id": 3
+    },
+    {
+      "text": "Item2",
+      "important": false,
+      "done": true,
+      "id": 4
+    }
+  ]
+}
