@@ -4,11 +4,10 @@ import PropTypes from "prop-types";
 import "./todolist.css";
 const TodoList = ({
   products,
-  onImportant,
-  onDone,
   onDeleted,
   getAllItems,
   error,
+  updateTodo,
 }) => {
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -19,18 +18,32 @@ const TodoList = ({
       window.clearInterval(timer);
     };
   }, []);
-  console.log(error);
+console.log(error)
   if (error) {
+     alert(error);
     return <p>Server is not connected</p>;
   }
+
   const elements = products.map((item) => {
     const { id, ...itemprops } = item;
+
+    console.log(item);
     return (
       <li key={id} className="list-group-item">
         <Todo
-          {...itemprops} /*або  label={item.label} important={item.important}*/
-          onImportant={() => onImportant(id, item)}
-          onDone={() => onDone(id, item)}
+          {...itemprops}
+          onImportant={() =>
+            updateTodo(id, {
+              ...item,
+              important: !item.important,
+            })
+          }
+          onDone={() =>
+            updateTodo(id, {
+              ...item,
+              done: !item.done,
+            })
+          }
           onDeleted={() => onDeleted(id, item)}
         />
       </li>
@@ -48,8 +61,7 @@ TodoList.propTypes = {
       done: PropTypes.bool.isRequired,
     })
   ),
-  onImportant: PropTypes.func.isRequired,
-  onDone: PropTypes.func.isRequired,
+  updateTodo: PropTypes.func.isRequired,
   onDeleted: PropTypes.func.isRequired,
 };
 export default TodoList;

@@ -1,22 +1,21 @@
 import { combineReducers } from "redux";
 import {
-  ADD_TODO,
   SET_VISIBILITY_FILTER,
-  DELETE_ITEM,
-  GET_ALL_ITEMS,
-  IMPORTANT_ITEM,
-  DONE_ITEM,
   VisibilityFilters,
-  ACTIVE_ITEM,
-  FETCH_PRODUCTS_PENDING,
-  FETCH_PRODUCTS_SUCCESS,
-  FETCH_PRODUCTS_ERROR,
+  DELETE_ITEM_ERROR,
+  ADD_ITEM_SUCCESS,
+  DELETE_ITEM_SUCCESS,
+  GET_ALL_ITEMS_SUCCESS,
+  GET_ALL_ITEMS_ERROR,
+  UPDATE_ITEM_SUCCESS,
+  ADD_ITEM_ERROR,
+  UPDATE_TODO_ERROR,
 } from "../redux/types";
 const { SHOW_ALL } = VisibilityFilters;
 
 const initialState = {
   todos: [],
-  error: null
+  error: null,
 };
 
 function visibilityFilter(state = SHOW_ALL, action) {
@@ -29,41 +28,53 @@ function visibilityFilter(state = SHOW_ALL, action) {
 }
 function todos(state = initialState, action) {
   switch (action.type) {
-    case FETCH_PRODUCTS_SUCCESS:
+    case GET_ALL_ITEMS_SUCCESS:
       return {
+        ...state,
         todos: action.payload,
-        error: false
       };
-    case FETCH_PRODUCTS_ERROR:
+    case GET_ALL_ITEMS_ERROR:
       return {
-        ...state.todos,
-        error:true
+        error: action.payload,
       };
-    case ADD_TODO:
+
+
+    case ADD_ITEM_SUCCESS:
       return {
+        ...state,
         todos: [
           ...state.todos,
           {
+            id: Date.now(),
             text: action.text,
             important: false,
             done: false,
           },
         ],
-        error: false
       };
-    case IMPORTANT_ITEM:
+    case ADD_ITEM_ERROR:
       return {
-        todos: state.todos.map((todo) =>
-          todo.id === action.id ? { ...todo, important: !todo.important } : todo
+        error: action.payload,
+      };
+
+
+
+    case UPDATE_ITEM_SUCCESS: {
+      return {
+        ...state.todos,
+        todos: state.todos.map((item) =>
+          item.id === action.payload.id ? action.payload.newTodo : item
         ),
       };
-    case DONE_ITEM:
-      return {
-        todos: state.todos.map((todo) =>
-          todo.id === action.id ? { ...todo, done: !todo.done } : todo
-        ),
-      };
-    case DELETE_ITEM:
+    }
+    case UPDATE_TODO_ERROR: {
+      return { error: action.payload };
+    }
+
+
+    case DELETE_ITEM_ERROR:
+      return { error: action.payload };
+    case DELETE_ITEM_SUCCESS:
       return { todos: state.todos.filter((el) => el.id !== action.id) };
     default:
       return state;

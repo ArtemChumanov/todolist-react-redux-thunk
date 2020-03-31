@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { addTodo, addNewTask } from "../../redux/action";
+import { addNewItem } from "../../redux/action";
 import "./add-new-item.css";
 
 const AddTodo = ({ dispatch }) => {
@@ -15,8 +15,9 @@ const AddTodo = ({ dispatch }) => {
           if (!input.value.trim()) {
             return;
           }
-          dispatch(addNewTask(input.value, false, false));
+          dispatch(addNewItem(input.value, false, false));
           input.value = "";
+
         }}
       >
         <input className="form-control " ref={(node) => (input = node)} />

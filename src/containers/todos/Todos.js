@@ -2,12 +2,9 @@ import { VisibilityFilters } from "../../redux/types";
 
 import { connect } from "react-redux";
 import {
-  onDone,
   getAllItems,
-  checkImportant,
-  deleteItems,
-  checkDone,
-  fetchProductsError,
+  onDeleted,
+  updateTodo
 } from "../../redux/action";
 import TodoList from "../../components/todolist/todolist";
 
@@ -29,9 +26,8 @@ const select = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onImportant: (id, todo) => dispatch(checkImportant(id, todo)),
-  onDone: (id, todo) => dispatch(checkDone(id, todo)),
-  onDeleted: (id) => dispatch(deleteItems(id)),
+  updateTodo: (id, todo) => dispatch(updateTodo(id, todo)),
+  onDeleted: (id) => dispatch(onDeleted(id)),
   getAllItems: () => dispatch(getAllItems()),
 });
 
